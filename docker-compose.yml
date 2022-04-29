@@ -46,3 +46,7 @@ services:
       - PMA_HOST=db
     depends_on:
       - db
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'

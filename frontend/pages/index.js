@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import {useEffect, useState} from "react";
+import axios from "axios";
 
 export default function Home() {
   const [success, setSuccess] = useState(null);
@@ -9,14 +10,14 @@ export default function Home() {
   const fetchHello = () => {
     setError('');
     setSuccess('');
-    fetch('http://localhost/test/', {
-      mode: "cors",
+    axios.post(`${window.location.protocol}//${window.location.hostname}:3000/test/?param=5`, ['mybody'], {
+      // withCredentials: true,
       headers: {
-        'Content-Type': 'application/json'
+        // 'Origin': window.location.href,
+        'Content-Type': 'application/json',
       },
     })
-      .then(r => r.json())
-      .then(response => setSuccess(response))
+      .then(response => setSuccess(response.data))
       .catch(error => {
         setError(error.toString())
         console.log('error', error);
@@ -44,10 +45,10 @@ export default function Home() {
           <code className={styles.code}>pages/index.js</code>
         </p>
 
-        {success && <code className={styles.success}>{JSON.stringify(success)}</code>}
+        {success && <code className={styles.success}><pre>{JSON.stringify(success, null, '  ')}</pre></code>}
         {error && <code className={styles.error}>{error}</code>}
         {error && <code className={styles.error}>{error}</code>}
-        {!success && !error && <code>Loading</code>}
+        {!success && !error && <code>Loading...</code>}
 
         <div className={styles.grid}>
           <a href="#" className={styles.card} onClick={e => {

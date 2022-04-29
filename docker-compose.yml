@@ -9,14 +9,14 @@ services:
     image: yiisoftware/yii2-php:7.4-apache
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      - ./api/:/app:delegated
+      - ./:/app:delegated
       - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       - ./docker/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
     environment:
       - PHP_ENABLE_XDEBUG=1
       - PHP_IDE_CONFIG=serverName=MyTestServer
     ports:
-      - '80:80'
+      - '3000:80'
     networks:
       - default
     depends_on:
@@ -49,4 +49,4 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - '3000:3000'
+      - '80:3000'

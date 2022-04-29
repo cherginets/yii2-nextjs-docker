@@ -13,8 +13,13 @@ $config = [
     ],
     'components' => [
         'request' => [
+//            'class' => \yii\web\Request::class,
+            'enableCsrfValidation' => false,
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '0aw98c098208947109nmfmwa',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -38,7 +43,8 @@ $config = [
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                    'levels' => ['error', 'warning', 'trace', 'info'],
+                    'logVars' => [], //не добавлять в лог глобальные переменные ($_SERVER, $_SESSION...)
                 ],
             ],
         ],

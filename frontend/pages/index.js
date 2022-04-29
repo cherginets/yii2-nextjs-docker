@@ -1,7 +1,32 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import {useEffect, useState} from "react";
 
 export default function Home() {
+  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState(null);
+
+  const fetchHello = () => {
+    setError('');
+    setSuccess('');
+    fetch('http://localhost/test/', {
+      mode: "cors",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(r => r.json())
+      .then(response => setSuccess(response))
+      .catch(error => {
+        setError(error.toString())
+        console.log('error', error);
+      })
+  };
+
+  useEffect(() => {
+    fetchHello()
+  }, [])
+
   return (
     <div className={styles.container}>
       <Head>
@@ -19,34 +44,20 @@ export default function Home() {
           <code className={styles.code}>pages/index.js</code>
         </p>
 
+        {success && <code className={styles.success}>{JSON.stringify(success)}</code>}
+        {error && <code className={styles.error}>{error}</code>}
+        {error && <code className={styles.error}>{error}</code>}
+        {!success && !error && <code>Loading</code>}
+
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
+          <a href="#" className={styles.card} onClick={e => {
+            e.preventDefault();
+            fetchHello();
+          }}>
+            <h3>Send&nbsp;query&nbsp;to&nbsp;API</h3>
+            <p>and get 'hello:world'</p>
           </a>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
         </div>
       </main>
 

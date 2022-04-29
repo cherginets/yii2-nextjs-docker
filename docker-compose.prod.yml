@@ -1,0 +1,10 @@
+version: '3'
+
+networks:
+  default:
+    driver: bridge
+
+services:
+  php:
+    environment:
+      - YII_ENV=prod

@@ -19,9 +19,7 @@ class TestController extends Controller
      */
     public static function allowedDomains()
     {
-        if(YII_ENV_PROD) return [
-            'http://localhost',
-        ];
+        if(YII_ENV_PROD) return ['http://localhost',];
 
         return [
              '*', // todo YII_ENV_PROD должна выставляться
@@ -58,6 +56,7 @@ class TestController extends Controller
             'api' => 'worked',
             'query' => Yii::$app->request->get(),
             'body' => Yii::$app->request->post(),
+            'YII_ENV' => YII_ENV,
         ]);
     }
 }

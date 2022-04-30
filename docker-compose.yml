@@ -46,7 +46,7 @@ services:
       - PMA_HOST=db
     depends_on:
       - db
-  frontend:
-    build: ./frontend
+  nextjs:
+    build: ./nextjs
     ports:
       - '80:3000'

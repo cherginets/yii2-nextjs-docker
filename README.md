@@ -2,13 +2,15 @@
 
 Yii2, NextJS, Crontab, NodeJS. All in one docker compose container.
 
-## Install
+## Install production
 ```
+cp .env-prod .env
 docker run  -v %cd%:/app -it --rm composer install -d yii2 --prefer-dist
 docker-compose up -d --build
 ```
 ## Development
 ```
+cp .env-dev .env
 docker-compose up -d --build
 cd frontend
 yarn run dev
@@ -19,6 +21,5 @@ yarn run dev
 ## Rebuild
 
 ## Crontab
-
 ## Testing backend
 ## Testing frontend

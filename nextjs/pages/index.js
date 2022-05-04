@@ -7,19 +7,20 @@ export async function getStaticProps(context) {
   return {
     props: {
       NODE_ENV: process.env.NODE_ENV,
+      BACKEND_HOST_NAME : process.env.BACKEND_HOST_NAME || '',
       SOME_NEXTJS_ENVIROMENT_VARIABLE: process.env.SOME_NEXTJS_ENVIROMENT_VARIABLE,
     }, // will be passed to the page component as props
   }
 }
 
-export default function Home({NODE_ENV, SOME_NEXTJS_ENVIROMENT_VARIABLE}) {
+export default function Home({NODE_ENV, SOME_NEXTJS_ENVIROMENT_VARIABLE, BACKEND_HOST_NAME}) {
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
 
   const fetchHello = () => {
     setError('');
     setSuccess('');
-    axios.post(`${window.location.protocol}//${window.location.hostname}:3000/test/?param=5`, ['mybody'], {
+    axios.post(`${window.location.protocol}//${BACKEND_HOST_NAME}/test/?param=5`, ['mybody'], {
       // withCredentials: true,
       headers: {
         // 'Origin': window.location.href,
@@ -57,6 +58,7 @@ export default function Home({NODE_ENV, SOME_NEXTJS_ENVIROMENT_VARIABLE}) {
 
         <code className={styles.success}><pre>NODE_ENV={NODE_ENV}</pre></code>
         <code className={styles.success}><pre>SOME_NEXTJS_ENVIROMENT_VARIABLE={SOME_NEXTJS_ENVIROMENT_VARIABLE}</pre></code>
+        <code className={styles.success}><pre>BACKEND_HOST_NAME={BACKEND_HOST_NAME}</pre></code>
 
         {success && <code className={styles.success}><pre>{JSON.stringify(success, null, '  ')}</pre></code>}
         {error && <code className={styles.error}>{error}</code>}

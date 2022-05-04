@@ -3,50 +3,85 @@ version: '3'
 networks:
   default:
     driver: bridge
-
 services:
-  php:
-    image: yiisoftware/yii2-php:7.4-apache
+  #Proxy for all http requests
+  nginx_relay:
+    image: nginx
+    container_name: nginx_relay
     volumes:
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      - ./:/app:delegated
-      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
-      - ./docker/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      #nginx config
+      - "./docker/nginx/nginx.conf:/etc/nginx/nginx.conf"
+      #generated configs with ENV vars
+      - "./docker/nginx/templates:/etc/nginx/templates"
+      - "./docker/nginx/logs:/var/log/nginx/"
+      #Path to backend on local and remote
+      - "./${BACKEND_PATH_LOCAL}:${BACKEND_PATH_REMOTE}"
     environment:
-      - PHP_ENABLE_XDEBUG=1
-      - PHP_IDE_CONFIG=serverName=MyTestServer
+      - BACKEND_PATH_REMOTE=${BACKEND_PATH_REMOTE}
+      - BACKEND_PATH_REMOTE_PUBLIC=${BACKEND_PATH_REMOTE_PUBLIC}
+      - BACKEND_HOST_NAME=${BACKEND_HOST_NAME}
+      - FRONTEND_HOST_NAME=${FRONTEND_HOST_NAME}
+      - BACKEND_LOG_PATH_PREFIX=${BACKEND_LOG_PATH_PREFIX}
     ports:
-      - '3000:80'
-    networks:
-      - default
+      - "80:80"
     depends_on:
-      - db
-  db:
-    image: mysql:5.7
-    restart: always
+      - nextjs_front
+      - php_fpm
+  #fornt-end
+  nextjs_front:
+    image: node
+    container_name: nextjs_front
     environment:
-      - MYSQL_DATABASE=my_database_name
-      - MYSQL_USER=my_user_name
-      - MYSQL_PASSWORD=my_user_password
-      - MYSQL_ROOT_PASSWORD=my_root_password
-    ports:
-      - '3306:3306'
-    expose:
-      - '3306'
+      - FRONTEND_PATH_REMOTE=${FRONTEND_PATH_REMOTE}
+      - BACKEND_HOST_NAME=${BACKEND_HOST_NAME}
+    working_dir: ${FRONTEND_PATH_REMOTE}
     volumes:
-      - "./docker/mysql:/var/lib/mysql"
-    networks:
-      - default
+      - "./${FRONTEND_PATH_LOCAL}:${FRONTEND_PATH_REMOTE}"
+    #docker ps - show service status
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1"]
+      interval: 2s
+      timeout: 3s
+      retries: 60
+    expose:
+      - "3000"
+  #php interpreter. Custom with composer included
+  #For more php modules see file : ./docker/php/Dockerfile
+  php_fpm:
+    #Docker file for building custom container
+    build:
+      args:
+        user: composer
+        uid: 1000
+      context: ./
+      dockerfile: ./docker/php/Dockerfile
+    container_name: php_fpm
+    volumes:
+      - "${BACKEND_PATH_LOCAL}:${BACKEND_PATH_REMOTE}"
+      - "./docker/php/conf.d:/usr/local/etc/php/conf.d"
+    environment:
+      - YII_ENV=${YII_ENV}
+    expose:
+      - "9000"
+    working_dir: ${BACKEND_PATH_REMOTE}
+  db_mysql:
+    image: mysql:5.7.38
+    container_name: db_mysql
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+    expose:
+      - "3306"
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
       - '8888:80'
     environment:
       - PMA_ARBITRARY=1
-      - PMA_HOST=db
+      - PMA_HOST=db_mysql
     depends_on:
-      - db
-  nextjs:
-    build: ./nextjs
-    ports:
-      - '80:3000'
+      - db_mysql

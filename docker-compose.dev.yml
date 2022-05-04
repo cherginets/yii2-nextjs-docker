@@ -1,0 +1,14 @@
+version: '3'
+
+networks:
+  default:
+    driver: bridge
+services:
+  nextjs_front:
+    command: bash -c "npm run dev"
+  php_fpm:
+    volumes:
+      - "./docker/php/php.ini-development:/usr/local/etc/php/php.ini"
+  db_mysql:
+    ports:
+      - '${MYSQL_EXTERNAL_PORT}:3306'

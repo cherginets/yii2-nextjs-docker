@@ -3,7 +3,16 @@ import styles from '../styles/Home.module.css'
 import {useEffect, useState} from "react";
 import axios from "axios";
 
-export default function Home() {
+export async function getStaticProps(context) {
+  return {
+    props: {
+      NODE_ENV: process.env.NODE_ENV,
+      SOME_NEXTJS_ENVIROMENT_VARIABLE: process.env.SOME_NEXTJS_ENVIROMENT_VARIABLE,
+    }, // will be passed to the page component as props
+  }
+}
+
+export default function Home({NODE_ENV, SOME_NEXTJS_ENVIROMENT_VARIABLE}) {
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
 
@@ -28,6 +37,7 @@ export default function Home() {
     fetchHello()
   }, [])
 
+
   return (
     <div className={styles.container}>
       <Head>
@@ -44,6 +54,9 @@ export default function Home() {
           Get started by editing{' '}
           <code className={styles.code}>pages/index.js</code>
         </p>
+
+        <code className={styles.success}><pre>NODE_ENV={NODE_ENV}</pre></code>
+        <code className={styles.success}><pre>SOME_NEXTJS_ENVIROMENT_VARIABLE={SOME_NEXTJS_ENVIROMENT_VARIABLE}</pre></code>
 
         {success && <code className={styles.success}><pre>{JSON.stringify(success, null, '  ')}</pre></code>}
         {error && <code className={styles.error}>{error}</code>}

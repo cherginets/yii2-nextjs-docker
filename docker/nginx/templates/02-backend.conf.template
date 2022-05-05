@@ -5,8 +5,8 @@ server {
   set $yii_bootstrap "index.php";
 
   # Specify log locations for current site
-      access_log ${BACKEND_PATH_REMOTE}/${BACKEND_LOG_PATH_PREFIX}/access.log;
-      error_log ${BACKEND_PATH_REMOTE}/${BACKEND_LOG_PATH_PREFIX}/error.log warn;
+      access_log /var/log/nginx/access.log;
+      error_log /var/log/nginx/error.log warn;
 
       # Typically I create a restrictions.conf file that I then include across all of my vhosts
       #include conf.d/restrictions.conf;

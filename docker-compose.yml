@@ -12,7 +12,7 @@ services:
       #nginx config
       - "./docker/nginx/nginx.conf:/etc/nginx/nginx.conf"
       #generated configs with ENV vars
-      - "./docker/nginx/templates:/etc/nginx/templates"
+      - "./docker/nginx/templates/02-backend.conf.template:/etc/nginx/templates/02-backend.conf.template"
       - "./docker/nginx/logs:/var/log/nginx/"
       #Path to backend on local and remote
       - "./${BACKEND_PATH_LOCAL}:${BACKEND_PATH_REMOTE}"
@@ -25,26 +25,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - nextjs_front
       - php_fpm
-  #fornt-end
-  nextjs_front:
-    image: node
-    container_name: nextjs_front
-    environment:
-      - FRONTEND_PATH_REMOTE=${FRONTEND_PATH_REMOTE}
-      - BACKEND_HOST_NAME=${BACKEND_HOST_NAME}
-    working_dir: ${FRONTEND_PATH_REMOTE}
-    volumes:
-      - "./${FRONTEND_PATH_LOCAL}:${FRONTEND_PATH_REMOTE}"
-    #docker ps - show service status
-    healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1"]
-      interval: 2s
-      timeout: 3s
-      retries: 60
-    expose:
-      - "3000"
   #php interpreter. Custom with composer included
   #For more php modules see file : ./docker/php/Dockerfile
   php_fpm:

@@ -4,8 +4,31 @@ networks:
   default:
     driver: bridge
 services:
+  #fornt-end
   nextjs_front:
+    image: node
+    container_name: nextjs_front
+    environment:
+      - FRONTEND_PATH_REMOTE=${FRONTEND_PATH_REMOTE}
+      - BACKEND_HOST_NAME=${BACKEND_HOST_NAME}
+    working_dir: ${FRONTEND_PATH_REMOTE}
+    volumes:
+      - "./${FRONTEND_PATH_LOCAL}:${FRONTEND_PATH_REMOTE}"
+    #docker ps - show service status
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1"]
+      interval: 2s
+      timeout: 3s
+      retries: 60
+    expose:
+      - "3000"
     command: bash -c "npm run start"
   php_fpm:
     volumes:
       - "./docker/php/php.ini-production:/usr/local/etc/php/php.ini"
+  nginx_relay:
+    depends_on:
+      - nextjs_front
+    volumes:
+      #generated configs with ENV vars
+      - "./docker/nginx/templates/01-frontend.conf.template:/etc/nginx/templates/01-frontend.conf.template"

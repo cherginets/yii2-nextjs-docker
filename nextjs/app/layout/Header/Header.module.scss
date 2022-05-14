@@ -1,0 +1,15 @@
+
+.header {
+  display: flex;
+  position: fixed;
+  height: 50px;
+  left: 0;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+
+  background: #FFFFFF;
+  box-shadow: inset 0px -1px 0px #EEEEEE;
+  z-index: 1;
+}

@@ -5,4 +5,4 @@ REM docker-compose --env-file ./.env-prod -f docker-compose.yml -f docker-compos
 REM installing node-js modules
 docker-compose --env-file ./.env-prod -f docker-compose.yml -f docker-compose.prod.yml run nextjs_front bash -c "yarn install && yarn run build" &
 REM running
-docker-compose --env-file ./.env-prod -f docker-compose.yml -f docker-compose.prod.yml up
+docker-compose --env-file ./.env-prod -f docker-compose.yml -f docker-compose.prod.yml up -d

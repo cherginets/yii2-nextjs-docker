@@ -4,11 +4,9 @@ import {Box} from "@mui/material";
 import Container from "@mui/material/Container";
 
 export default function Footer() {
-    return <footer className={classes.footer}>
-        <Box boxShadow={1}>
+    return <Box component={'footer'}  boxShadow={1} className={classes.footer}>
             <Container className={classes.container}>
                 footer
             </Container>
-        </Box>
-    </footer>
+    </Box>
 }

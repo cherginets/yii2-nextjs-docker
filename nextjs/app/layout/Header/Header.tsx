@@ -5,7 +5,7 @@ import {Box, Stack} from "@mui/material";
 import Link from "../../../features/next-mui-link/Link";
 
 export default function Header() {
-    return <Box boxShadow={1} className={classes.header}>
+    return <Box component={'header'} boxShadow={1} className={classes.header}>
         <Container className={classes.container}>
             <Stack direction={'row'} spacing={2}>
                 <Link href={'/'}>Главная</Link>

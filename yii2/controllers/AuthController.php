@@ -33,7 +33,7 @@ class AuthController extends Controller {
         $behaviors['access'] = [
             'class' => AccessControl::className(),
             'rules' => [
-                ['allow' => true, 'actions' => ['get'], 'roles' => ['@']],
+                ['allow' => true, 'actions' => ['profile'], 'roles' => ['@']],
                 ['allow' => true, 'actions' => ['login', 'auth'], 'roles' => ['?']],
                 ['allow' => true, 'actions' => ['login', 'auth', 'logout'], 'roles' => ['@']],
             ],

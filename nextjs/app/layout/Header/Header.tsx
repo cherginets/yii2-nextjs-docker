@@ -9,6 +9,7 @@ export default function Header() {
         <Container className={classes.container}>
             <Stack direction={'row'} spacing={2}>
                 <Link href={'/'}>Главная</Link>
+                <Link href={'/auth/profile'}>Профиль</Link>
                 <Link href={'/auth/login'}>Вход</Link>
                 <Link href={'/auth/reg'}>Регистрация</Link>
                 <Link href={'/auth/forgot'}>Забыл пароль</Link>

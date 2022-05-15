@@ -94,6 +94,7 @@ class Controller extends yii\rest\Controller
 //            '*', // todo YII_ENV_PROD должна выставляться
             'http://localhost:3030',
             'http://next.app.localhost:3030',
+            'http://shop.local',
         ];
     }
 }

@@ -15,7 +15,7 @@ export default function FormikDateTime(props: Omit<TextFieldProps, 'name'> & {na
         value={value}
         onChange={onChange}
         error={formik.touched[props.name] && Boolean(formik.errors[props.name])}
-        helperText={formik.touched[props.name] && formik.errors[props.name]}
+        helperText={((formik.touched[props.name] && formik.errors[props.name]) as any)}
         margin={'normal'}
         variant={'standard'}
         fullWidth

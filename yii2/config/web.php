@@ -29,10 +29,10 @@ $config = [
         ],
         'session' => [
             'cookieParams' => [
-                    'domain' => '',
-                    'httpOnly' => true,
-                    'sameSite' => 'None',
-                'secure' => false,
+//                    'domain' => '',
+//                    'httpOnly' => true,
+//                    'sameSite' => 'None',
+//                'secure' => false,
             ],
         ],
         'response' => [

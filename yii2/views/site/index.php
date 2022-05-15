@@ -3,6 +3,8 @@
 /** @var yii\web\View $this */
 
 $this->title = 'My Yii Application';
+
+var_dump(Yii::$app->db->createCommand('SELECT 1')->queryAll());
 ?>
 <div class="site-index">
 

@@ -26,7 +26,7 @@ export default function AuthProfilePage() {
             <Grid container spacing={2}>
                 <Grid item xs={12} lg={4}>
                     <Paper sx={{p: 2}}>
-                        profile
+                        <Button onClick={fetch}>Profile</Button>
                     </Paper>
                 </Grid>
                 <Grid item xs={12} lg={8}>

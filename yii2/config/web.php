@@ -25,6 +25,15 @@ $config = [
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
             ],
+
+        ],
+        'session' => [
+            'cookieParams' => [
+                    'domain' => '',
+                    'httpOnly' => true,
+                    'sameSite' => 'None',
+                'secure' => false,
+            ],
         ],
         'response' => [
             'formatters' => [

@@ -8,6 +8,7 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
+use yii\widgets\ActiveForm;
 
 class AuthController extends Controller {
     /** @var Finder */
@@ -60,24 +61,27 @@ class AuthController extends Controller {
     public function actionLogin() {
 
         if (!\Yii::$app->user->isGuest) {
-            $this->goHome();
             return ['error1'];
-
         }
-
-
 
         /** @var LoginForm $model */
         $model = \Yii::createObject(LoginForm::className());
 //        $event = $this->getFormEvent($model);
 
+
 //        $this->performAjaxValidation($model);
 
 //        $this->trigger(self::EVENT_BEFORE_LOGIN, $event);
 
+        $model->load(\Yii::$app->getRequest()->post(), '');
+        $model->beforeValidate();
 
-        if ($model->load(\Yii::$app->getRequest()->post(), '') && $model->login()) {
-                return ['success', 'errors' => $model->getErrorSummary(true)];
+        if ($model->login()) {
+                return [
+                    'success',
+                    '\Yii::$app->user->isGuest' => \Yii::$app->user->isGuest,
+                    'errors' => $model->getErrorSummary(true),
+                ];
 //            $this->trigger(self::EVENT_AFTER_LOGIN, $event);
         }
 

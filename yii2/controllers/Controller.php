@@ -17,7 +17,7 @@ class Controller extends yii\rest\Controller
                 // restrict access to domains:
                 'Origin'                           => static::allowedDomains(),
                 'Access-Control-Request-Method'    => ['GET', 'POST', 'OPTIONS'],
-                'Access-Control-Allow-Credentials' => false,
+                'Access-Control-Allow-Credentials' => true,
                 'Access-Control-Allow-Headers' => ['content-type'],
                 'Access-Control-Max-Age'           => 0,                 // Cache (seconds)
             ],
@@ -36,7 +36,7 @@ class Controller extends yii\rest\Controller
 //        if(YII_ENV_PROD) return ['http://localhost',];
 
         return [
-            '*', // todo YII_ENV_PROD должна выставляться
+//            '*', // todo YII_ENV_PROD должна выставляться
             'http://localhost:3030',
         ];
     }

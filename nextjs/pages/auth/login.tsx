@@ -15,8 +15,8 @@ export default function IndexPage() {
                 <Grid item xs={12} lg={4}>
                     <Paper sx={{p: 2}}>
                         <Formik initialValues={{
-                            login: "anton.cherinets@gmail.com",
-                            password: "anton.cherinets@gmail.com",
+                            login: "anton.cherginets@gmail.com",
+                            password: "anton.cherginets@gmail.com",
                         }} onSubmit={(values) => {
                             setResponse('loading...');
                             apiAuth.login(values)

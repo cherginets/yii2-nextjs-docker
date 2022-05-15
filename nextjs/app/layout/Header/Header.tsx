@@ -13,6 +13,7 @@ export default function Header() {
                 <Link href={'/auth/reg'}>Регистрация</Link>
                 <Link href={'/auth/forgot'}>Забыл пароль</Link>
                 <Link href={'/ololo'}>404</Link>
+                <Link href={'/test'}>test</Link>
             </Stack>
         </Container>
     </Box>

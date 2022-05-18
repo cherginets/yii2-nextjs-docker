@@ -1,4 +1,4 @@
-import MuiLink, {LinkBaseProps} from "@mui/material/Link";
+import MuiLink, {LinkBaseProps as MuiLinkProps} from "@mui/material/Link";
 import NextLink, {LinkProps} from "next/link";
 
 export {NextLink, MuiLink};
@@ -14,7 +14,7 @@ export default function Link({
                                  prefetch,
                                  locale,
                                  ...muiProps
-                             }: LinkProps & LinkBaseProps) {
+                             }: LinkProps & MuiLinkProps) {
 
     return <NextLink
         href={href}

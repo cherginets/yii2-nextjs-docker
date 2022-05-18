@@ -8,6 +8,18 @@ import apiAuth from "../../api/apiAuth";
 export default function IndexPage() {
     const [response, setResponse] = useState('');
 
+    const submit = (values) => {
+        setResponse('loading...');
+        apiAuth.login(values)
+            .then(response => {
+                setResponse(JSON.stringify(response.data, null, ' '))
+            })
+            .catch(error => {
+                setResponse('error: ' + JSON.stringify(error.response.data, null, ' '))
+            })
+        console.log("values", values);
+    };
+
     return <Layout title={'Авторизация'}>
         <Container>
             <h1>Авторизация</h1>
@@ -17,17 +29,7 @@ export default function IndexPage() {
                         <Formik initialValues={{
                             login: "anton.cherginets@gmail.com",
                             password: "anton.cherginets@gmail.com",
-                        }} onSubmit={(values) => {
-                            setResponse('loading...');
-                            apiAuth.login(values)
-                                .then(response => {
-                                    setResponse(JSON.stringify(response.data, null, ' '))
-                                })
-                                .catch(error => {
-                                    setResponse('error: ' + JSON.stringify(error.response.data, null, ' '))
-                                })
-                            console.log("values", values);
-                        } }>{({values, handleSubmit}) => {
+                        }} onSubmit={submit}>{({values, handleSubmit}) => {
                             return <form onSubmit={handleSubmit}>
                                 <FormikText label={'Эл. почта'} name={'login'} />
                                 <FormikText label={'Пароль'} name={'password'} type={'password'} />

@@ -6,6 +6,7 @@ const apiAuth = {
     logout: () => Promise.resolve(),
     registration: () => Promise.resolve(),
     forgot: () => Promise.resolve(),
+    init: () => api.get('/auth/init'),
 }
 
 export default apiAuth;

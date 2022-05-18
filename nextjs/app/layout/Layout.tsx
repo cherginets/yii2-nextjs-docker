@@ -7,6 +7,7 @@ import {Flip, ToastContainer, Zoom} from "react-toastify";
 import * as React from "react";
 // import toastClasses from '../../styles/modules/toastify.module.scss';
 import clsx from "clsx";
+import AuthorizedLayout from "./AuthorizedLayout/AuthorizedLayout";
 
 export type LayoutProps = {
     title: string,
@@ -23,7 +24,9 @@ const Layout = ({title, children, contentClassName}: LayoutProps) => {
         <div className={classes.layout}>
             <Header />
             <div className={clsx(classes.content, contentClassName)}>
-                {children}
+                <AuthorizedLayout>
+                    {children}
+                </AuthorizedLayout>
             </div>
             <Footer />
             <ToastContainer

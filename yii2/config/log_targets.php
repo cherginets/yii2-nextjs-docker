@@ -31,14 +31,6 @@ foreach ($custom_categories as $category) {
         'exportInterval' => 1,
         'logVars' => [], //не добавлять в лог глобальные переменные ($_SERVER, $_SESSION...)
     ];
-    $targets[] = [
-        'class' => 'yii\log\FileTarget',
-        'levels' => ['error', 'warning'],
-        'logFile' => "@app/runtime/logs/$category-error.log",
-        'categories' => [$category],
-        'exportInterval' => 1,
-        'logVars' => [], //не добавлять в лог глобальные переменные ($_SERVER, $_SESSION...)
-    ];
 }
 
 return $targets;

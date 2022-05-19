@@ -77,6 +77,7 @@ class AuthController extends Controller {
         $model->load(\Yii::$app->getRequest()->post(), '');
         $model->beforeValidate();
 
+
         if ($model->login()) {
                 return [
                     'success',

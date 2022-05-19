@@ -31,7 +31,7 @@ const Layout = ({title, children, contentClassName}: LayoutProps) => {
             <Footer />
             <ToastContainer
                 position={'bottom-center'}
-                theme={'dark'}
+                theme={'colored'}
                 // toastClassName={toastClasses.toast}
                 hideProgressBar
                 // className={toastClasses.toastify}

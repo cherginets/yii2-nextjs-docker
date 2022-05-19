@@ -7,6 +7,7 @@ const apiAuth = {
     registration: (body) => api.post('/auth/registration', body),
     forgot: () => Promise.resolve(),
     init: () => api.get('/auth/init'),
+    activate: (id: string, code: string) => api.post('/auth/activate', {id, code}),
 }
 
 export default apiAuth;

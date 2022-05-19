@@ -35,7 +35,7 @@ class AuthController extends Controller {
             'class' => AccessControl::className(),
             'rules' => [
                 ['allow' => true, 'actions' => ['profile'], 'roles' => ['@']],
-                ['allow' => true, 'actions' => ['login', 'auth', 'registration'], 'roles' => ['?']],
+                ['allow' => true, 'actions' => ['login', 'auth', 'registration', 'activate'], 'roles' => ['?']],
                 ['allow' => true, 'actions' => ['login', 'auth', 'logout'], 'roles' => ['@']],
             ],
 //            'verbs' => [
@@ -120,6 +120,29 @@ class AuthController extends Controller {
 
 
         throw new BadRequestHttpException(implode(",", $model->getErrorSummary(true)));
+    }
+
+    public function actionActivate() {
+        $id = \Yii::$app->request->post('id');
+        $code = \Yii::$app->request->post('code');
+
+        $user = $this->finder->findUserById($id);
+
+//        if ($user === null || $this->module->enableConfirmation == false) {
+//            throw new NotFoundHttpException();
+//        }
+
+//        $event = $this->getUserEvent($user);
+//
+//        $this->trigger(self::EVENT_BEFORE_CONFIRM, $event);
+
+        $user->attemptConfirmation($code);
+
+
+
+//        $this->trigger(self::EVENT_AFTER_CONFIRM, $event);
+
+        return ['result' => $user->getIsConfirmed()];
     }
 
 }

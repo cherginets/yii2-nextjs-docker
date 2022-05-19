@@ -2,13 +2,14 @@
 
 namespace app\controllers;
 
+use app\common\Logger;
 use dektrium\user\Finder;
 use dektrium\user\models\LoginForm;
-use Yii;
+use dektrium\user\models\RegistrationForm;
+use yii\base\UserException;
 use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
-use yii\widgets\ActiveForm;
 
 class AuthController extends Controller {
     /** @var Finder */
@@ -34,7 +35,7 @@ class AuthController extends Controller {
             'class' => AccessControl::className(),
             'rules' => [
                 ['allow' => true, 'actions' => ['profile'], 'roles' => ['@']],
-                ['allow' => true, 'actions' => ['login', 'auth'], 'roles' => ['?']],
+                ['allow' => true, 'actions' => ['login', 'auth', 'registration'], 'roles' => ['?']],
                 ['allow' => true, 'actions' => ['login', 'auth', 'logout'], 'roles' => ['@']],
             ],
 //            'verbs' => [
@@ -61,7 +62,7 @@ class AuthController extends Controller {
     public function actionLogin() {
 
         if (!\Yii::$app->user->isGuest) {
-            return ['error1'];
+            throw new UserException('Вы уже авторизованы.');
         }
 
         /** @var LoginForm $model */
@@ -92,4 +93,33 @@ class AuthController extends Controller {
             '$model' => $model,
         ];
     }
+
+    public function actionRegistration()
+    {
+        Logger::debug('vawvwa');
+//        \Yii::info(\Yii::$app->);
+//        if (\Yii::$app->user && !\Yii::$app->user->module->enableRegistration) {
+//            throw new NotFoundHttpException();
+//        }
+
+        /** @var RegistrationForm $model */
+        $model = \Yii::createObject(RegistrationForm::className());
+
+        $post = \Yii::$app->getRequest()->post();
+
+        $model->load($post, '');
+        if(!$model->username) $model->username = $model->email;
+
+        $model->beforeValidate();
+
+        if ($model->register()) {
+            return [
+                'success' => true,
+            ];
+        }
+
+
+        throw new BadRequestHttpException(implode(",", $model->getErrorSummary(true)));
+    }
+
 }

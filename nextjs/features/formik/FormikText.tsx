@@ -4,8 +4,6 @@ import {TextField, TextFieldProps} from "@mui/material";
 export default function FormikText(props: Omit<TextFieldProps, 'name'> & {name: string}) {
     const formik = useFormikContext<any>();
 
-    console.log('formik.values', formik.values);
-
     return <TextField
         value={formik.values[props.name]}
         onChange={formik.handleChange}

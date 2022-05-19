@@ -2,10 +2,12 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+$log_targets = require __DIR__ . '/log_targets.php';
 
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
+    'language' => 'ru-RU',
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -64,13 +66,7 @@ $config = [
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning', 'trace', 'info'],
-                    'logVars' => [], //не добавлять в лог глобальные переменные ($_SERVER, $_SESSION...)
-                ],
-            ],
+            'targets' => $log_targets,
         ],
         'db' => $db,
         'urlManager' => [

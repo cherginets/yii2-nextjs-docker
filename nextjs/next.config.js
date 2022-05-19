@@ -1,4 +1,7 @@
 module.exports = {
+  // i18n: {
+  //   defaultLocale: "ru-RU",
+  // },
   experimental: {
     outputStandalone: true,
   },

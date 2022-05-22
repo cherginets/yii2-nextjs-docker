@@ -11,9 +11,11 @@ services:
     environment:
       - FRONTEND_PATH_REMOTE=${FRONTEND_PATH_REMOTE}
       - BACKEND_HOST_NAME=${BACKEND_HOST_NAME}
+      - YARN_CACHE_FOLDER=/yarn
     working_dir: ${FRONTEND_PATH_REMOTE}
     volumes:
       - "./${FRONTEND_PATH_LOCAL}:${FRONTEND_PATH_REMOTE}"
+      - "yarn_cache:/yarn"
     #docker ps - show service status
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1"]
@@ -32,3 +34,6 @@ services:
     volumes:
       #generated configs with ENV vars
       - "./docker/nginx/templates/01-frontend.conf.template:/etc/nginx/templates/01-frontend.conf.template"
+
+volumes:
+  yarn_cache:

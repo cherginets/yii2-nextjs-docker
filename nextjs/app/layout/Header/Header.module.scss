@@ -13,3 +13,9 @@
   box-shadow: inset 0px -1px 0px #EEEEEE;
   z-index: 1;
 }
+
+.toolbar {
+  & > *:not(:first-child) {
+    margin-left: 10px;
+  }
+}

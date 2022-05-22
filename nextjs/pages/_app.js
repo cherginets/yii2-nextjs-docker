@@ -8,7 +8,7 @@ import {CacheProvider} from '@emotion/react';
 import _theme from '../styles/_theme';
 import _createEmotionCache from '../styles/_createEmotionCache';
 import {Provider} from "react-redux";
-// import store from "../redux/createStore";
+import store from "../app/store";
 import 'react-toastify/dist/ReactToastify.css';
 
 const clientSideEmotionCache = _createEmotionCache();
@@ -26,7 +26,7 @@ export default function MyApp(props) {
   } = props;
 
   return (
-    // <Provider store={store}>
+    <Provider store={store}>
         <CacheProvider value={emotionCache}>
           <Head>
             <title>GetProxy.io</title>
@@ -37,7 +37,7 @@ export default function MyApp(props) {
             <Component {...pageProps} />
           </ThemeProvider>
         </CacheProvider>
-    // </Provider>
+    </Provider>
   );
 }
 

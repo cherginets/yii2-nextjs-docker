@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\common\Logger;
+use app\models\User;
 use dektrium\user\Finder;
 use dektrium\user\models\LoginForm;
 use dektrium\user\models\RegistrationForm;
@@ -10,6 +11,7 @@ use yii\base\UserException;
 use yii\filters\AccessControl;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class AuthController extends Controller {
     /** @var Finder */
@@ -50,13 +52,21 @@ class AuthController extends Controller {
     }
 
     public function actionProfile() {
+        $user = $this->finder->findUserById(\Yii::$app->user->getId());
         $profile = $this->finder->findProfileById(\Yii::$app->user->getId());
 
         if ($profile === null) {
             throw new NotFoundHttpException();
         }
 
-        return $profile;
+        return array_merge($profile->toArray(), ['email' => $user->email]);
+    }
+
+    public function actionLogout()
+    {
+        \Yii::$app->getUser()->logout();
+
+        return ['result' => true];
     }
 
     public function actionLogin() {
@@ -114,9 +124,21 @@ class AuthController extends Controller {
         $model->beforeValidate();
 
         if ($model->register()) {
-            return [
+            /** @var User $user */
+            $user = User::find()->where([
+                User::tableName() . '.email' => $post['email'],
+            ])->one();
+
+            $response = [
                 'success' => true,
             ];
+            if(!YII_ENV_PROD) {
+                $response = array_merge($response, [
+                    'user_id' => $user->id,
+                    'token' => $user->token ? $user->token->code : null
+                ]);
+            }
+            return $response;
         }
 
 

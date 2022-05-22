@@ -3,14 +3,14 @@ import { Formik } from "formik";
 import Layout from "../../app/layout/Layout";
 import FormikText from "../../features/formik/FormikText";
 import {useEffect, useState} from "react";
-import apiAuth from "../../api/apiAuth";
+import authAPI from "../../api/authAPI";
 
 export default function AuthProfilePage() {
     const [response, setResponse] = useState('');
 
     const fetch = () => {
         setResponse('loading...');
-        apiAuth.profileGet()
+        authAPI.profileGet()
             .then(response => {
                 setResponse(JSON.stringify(response.data, null, ' '))
             })
@@ -18,18 +18,13 @@ export default function AuthProfilePage() {
                 setResponse('error: ' + JSON.stringify(error.response.data, null, ' '))
             });
     }
-    useEffect(() => {fetch();}, []);
+    useEffect(() => {fetch()}, []);
 
-    return <Layout title={'Профиль'}>
+    return <Layout title={'Профиль'} redirectIfGuest={true}>
         <Container>
-            <h1>Авторизация</h1>
+            <h1>Профиль</h1>
             <Grid container spacing={2}>
-                <Grid item xs={12} lg={4}>
-                    <Paper sx={{p: 2}}>
-                        <Button onClick={fetch}>Profile</Button>
-                    </Paper>
-                </Grid>
-                <Grid item xs={12} lg={8}>
+                <Grid item xs={12}>
                     <Paper sx={{p: 2}}>
                         <pre>{response}</pre>
                     </Paper>

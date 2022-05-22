@@ -4,18 +4,23 @@ Yii2, NextJS, Crontab, NodeJS. All in one docker compose container.
 
 ## preinstall
 ```
+# Установка зависимостей
 docker run  -v %cd%:/app -it --rm composer install -d yii2 --prefer-dist
-# sudo docker
+
+# Миграции базы данных
 docker exec -u 0 -it containerName bash
 php yii migrate/up --migrationPath=@vendor/dektrium/yii2-user/migrations
+
+# Перенос базы
+//todo
 ```
 ## run production
 ```
-buld-run-dev.bat
+run-dev.bat
 ```
 ## run development
 ```
-buld-run-prod.bat
+run-prod.bat
 ```
 
 ## Deploy and Rebuild
